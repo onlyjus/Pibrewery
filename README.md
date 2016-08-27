@@ -1,2 +1,9 @@
-# brewpi
-Brew beer with a raspberry pi
+# Pibrewery
+Pibrewery is a program to manage the brewing process.
+
+## Dependencies
+- Python
+- kivy
+
+## Contributors
+- Justin Weber
