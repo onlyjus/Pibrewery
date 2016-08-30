@@ -5,6 +5,7 @@
 # see LICENSE
 
 from math import sin
+from random import gauss
 
 import kivy
 kivy.require('1.9.1')
@@ -14,6 +15,7 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.garden.graph import Graph, MeshLinePlot
+from kivy.properties import ListProperty
 
 class MainScreen(Screen):
     pass
@@ -24,44 +26,29 @@ class BrewingScreen(Screen):
 class FermentationScreen(Screen):
     pass
 
-class SettingsScreen(Screen):
-    pass
-
 class ScreenManagement(ScreenManager):
     pass
 
-presentation = Builder.load_file("pibrewery.kv")
-
 class PiBrewery(App):
-    def __init__(self, *args, **kwargs):
-        App.__init__(self, *args, **kwargs)
-
-        self.ferm_plot = None
-        self.ferm_graph = None
-
-        Clock.schedule_interval(self.update_fermentation_plot, 5)
-
+    running_values = ListProperty([])
 
     def build(self):
-        self.title = 'PiBrewery'
-        Clock.schedule_once(self.post_build)
-        return presentation
+        self.title = 'Pibrewery'
+        self.root = Builder.load_file("pibrewery.kv")
 
-    def post_build(self, dt):
-        for wid in self.root.walk(restrict=True):
-            print(wid.id)
-            if hasattr(wid, 'name'):
-                print(wid.name)
-            if wid.id == 'ferm_graph':
-                self.ferm_graph = wid
+#        print self.root.ids.sm
+#        for wid in self.root.walk():
+#            print(wid, wid.id)
+#            if hasattr(wid, 'name'):
+#                print('name', wid.name)
+#            if wid.id == 'ferm_graph':
+#                self.ferm_graph = wid
 
-#        self.ferm_plot = MeshLinePlot(color=[1, 0, 0, 1])
-#        self.ferm_plot.points = [(x, sin(x / 10.)) for x in range(0, 101)]
-#        self.ferm_graph.add_plot(self.ferm_plot)
-
+        return
 
     def update_fermentation_plot(self, dt):
-        print('update')
+        self.running_values.append(gauss(.5, .1))
+        self.running_values = self.running_values[-100:]
 
 if __name__ == '__main__':
     PiBrewery().run()

@@ -1,13 +1,28 @@
 #:kivy 1.9
+#:import chain itertools.chain
+#:import Clock kivy.clock.Clock
 
 ScreenManagement:
+    id: sm
     name: 'screen manager'
     MainScreen:
     BrewingScreen
     FermentationScreen:
-    SettingsScreen:
+
+<Graph@Widget>:
+    max: 100
+    values: []
+    canvas:
+        Line:
+            points:
+                list(chain(*
+                [[
+                self.x + x * self.width / len(self.values),
+                self.y + y * self.height / self.max
+                ] for x, y in enumerate(self.values)])) if self.values else []
 
 <MainScreen>:
+    id: main
     name: 'main'
     BoxLayout:
         id: layout
@@ -18,10 +33,6 @@ ScreenManagement:
         Button:
             on_release: app.root.current = 'fermentation'
             text: 'Fermentation'
-            font_size: 50
-        Button:
-            on_release: app.root.current = 'settings'
-            text: 'Settings'
             font_size: 50
 
 <BrewingScreen>:
@@ -42,6 +53,11 @@ ScreenManagement:
                 text: '64'
             Label:
                 text: 'F'
+            ToggleButton:
+                text: 'Start'
+                on_state:
+                    if self.state == 'down':Clock.schedule_interval(app.update_fermentation_plot, 0)
+                    else:Clock.unschedule(app.update_fermentation_plot)
         Graph:
             id: ferm_graph
             ylabel: 'Temperature'
@@ -49,15 +65,10 @@ ScreenManagement:
             y_grid: True
             y_ticks_major: 5
             x_ticks_major: 10
+            max: 1
+            values: app.running_values
         BoxLayout
         Button:
             on_release: app.root.current = 'main'
             text: 'back to the home screen'
             font_size: 50
-
-<SettingsScreen>:
-    name: 'settings'
-    Button:
-        on_release: app.root.current = 'main'
-        text: 'back to the home screen'
-        font_size: 50
