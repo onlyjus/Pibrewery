@@ -26,15 +26,15 @@ class ReadSensors(object):
 
     def read_voltage(self, channel=0, gain=1):
         """read and return the  voltage of the specified channel"""
-        value = adc.read_adc(channel, gain=gain)
+        value = self.adc.read_adc(channel, gain=gain)
         # convert to voltage
         voltage = value/32767.0*4.096
-        return voltage
+        return voltage, value
 
-    def read_temeprature(self):
-        voltage = self.read_voltage(0, 1)
+    def read_temperature(self):
+        voltage, value = self.read_voltage(0, 1)
         # resistance
-        res = SERIES_RESISTOR/(32767.0/voltage-1)
+        res = SERIES_RESISTOR/(32767.0/value-1)
         # temperature
         temp_c = 1/(1/298.15+1/BCOEFFICIENT*math.log(res/THERMISTOR_NOMINAL)) - 273
 
@@ -42,6 +42,6 @@ class ReadSensors(object):
     
     def read_hall(self):
         """read and return the hall sensor value"""
-        voltage = self.read_voltage(1, 1)
+        voltage, value = self.read_voltage(1, 1)
         return voltage
 

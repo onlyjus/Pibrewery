@@ -66,7 +66,7 @@ ScreenManagement:
             ToggleButton:
                 text: 'Start'
                 on_state:
-                    if self.state == 'down':Clock.schedule_interval(app.update_fermentation_plot, 0)
+                    if self.state == 'down':Clock.schedule_interval(app.update_fermentation_plot, 1)
                     else:Clock.unschedule(app.update_fermentation_plot)
             Button:
                 on_release: app.root.current = 'main'
@@ -78,5 +78,5 @@ ScreenManagement:
             y_grid: True
             y_ticks_major: 5
             x_ticks_major: 10
-            max: 1
+            max: 100
             values: app.running_values

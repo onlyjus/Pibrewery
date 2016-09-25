@@ -15,6 +15,7 @@ from kivy.garden.graph import Graph, MeshLinePlot
 from kivy.properties import ListProperty
 
 from read_sensors import ReadSensors
+from tools import c_to_f
 
 class MainScreen(Screen):
     pass
@@ -31,28 +32,16 @@ class ScreenManagement(ScreenManager):
 class PiBrewery(App):
     running_values = ListProperty([])
     sensors = ReadSensors()
-    #def __init__(self, *args, **kwargs):
-       # App.__init__(self, *args, **kwargs)
-        #self.
 
     def build(self):
         self.title = 'Pibrewery'
         self.root = Builder.load_file("pibrewery.kv")
-
-#        self.root.ids.sm
-
-#        print self.root.ids.sm
-#        for wid in self.root.walk():
-#            print(wid, wid.id)
-#            if hasattr(wid, 'name'):
-#                print('name', wid.name)
-#            if wid.id == 'ferm_graph':
-#                self.ferm_graph = wid
-
         return
 
     def update_fermentation_plot(self, dt):
-        self.running_values.append(self.sensors.read_temperature())
+        temp = self.sensors.read_temperature()
+        temp = c_to_f(temp)
+        self.running_values.append(temp)
         self.running_values = self.running_values[-100:]
 
 if __name__ == '__main__':
