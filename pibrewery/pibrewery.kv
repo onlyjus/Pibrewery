@@ -13,7 +13,7 @@ ScreenManagement:
     max: 100
     values: []
     canvas:
-        Line:
+        SmoothLine:
             points:
                 list(chain(*
                 [[
@@ -25,14 +25,23 @@ ScreenManagement:
     id: main
     name: 'main'
     BoxLayout:
-        id: layout
+        orientation: 'vertical'
+        padding: 20
+        spacing: 20
+        BoxLayout:
+            id: layout
+            spacing: 20
+            Button:
+                on_release: app.root.current = 'brewing'
+                text: 'Brewing'
+                font_size: 50
+            Button:
+                on_release: app.root.current = 'fermentation'
+                text: 'Fermentation'
+                font_size: 50
         Button:
-            on_release: app.root.current = 'brewing'
-            text: 'Brewing'
-            font_size: 50
-        Button:
-            on_release: app.root.current = 'fermentation'
-            text: 'Fermentation'
+            on_release: app.get_running_app().stop()
+            text: 'Close'
             font_size: 50
 
 <BrewingScreen>:
@@ -43,6 +52,7 @@ ScreenManagement:
         font_size: 50
 
 <FermentationScreen>:
+    id: ferm_screen
     name: 'fermentation'
     BoxLayout:
         orientation: 'vertical'
@@ -58,6 +68,9 @@ ScreenManagement:
                 on_state:
                     if self.state == 'down':Clock.schedule_interval(app.update_fermentation_plot, 0)
                     else:Clock.unschedule(app.update_fermentation_plot)
+            Button:
+                on_release: app.root.current = 'main'
+                text: 'Home'
         Graph:
             id: ferm_graph
             ylabel: 'Temperature'
@@ -67,8 +80,3 @@ ScreenManagement:
             x_ticks_major: 10
             max: 1
             values: app.running_values
-        BoxLayout
-        Button:
-            on_release: app.root.current = 'main'
-            text: 'back to the home screen'
-            font_size: 50
