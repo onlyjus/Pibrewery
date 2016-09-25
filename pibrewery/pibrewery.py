@@ -36,6 +36,8 @@ class PiBrewery(App):
         self.title = 'Pibrewery'
         self.root = Builder.load_file("pibrewery.kv")
 
+#        self.root.ids.sm
+
 #        print self.root.ids.sm
 #        for wid in self.root.walk():
 #            print(wid, wid.id)
