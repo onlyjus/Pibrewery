@@ -4,9 +4,6 @@
 # Licensed under the terms of the MIT License
 # see LICENSE
 
-from math import sin
-from random import gauss
-
 import kivy
 kivy.require('1.9.1')
 
@@ -16,6 +13,8 @@ from kivy.clock import Clock
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.garden.graph import Graph, MeshLinePlot
 from kivy.properties import ListProperty
+
+from read_sensors import ReadSensors
 
 class MainScreen(Screen):
     pass
@@ -31,6 +30,10 @@ class ScreenManagement(ScreenManager):
 
 class PiBrewery(App):
     running_values = ListProperty([])
+    sensors = ReadSensors()
+    #def __init__(self, *args, **kwargs):
+       # App.__init__(self, *args, **kwargs)
+        #self.
 
     def build(self):
         self.title = 'Pibrewery'
@@ -47,7 +50,7 @@ class PiBrewery(App):
         return
 
     def update_fermentation_plot(self, dt):
-        self.running_values.append(gauss(.5, .1))
+        self.running_values.append(self.sensors.read_temperature())
         self.running_values = self.running_values[-100:]
 
 if __name__ == '__main__':
