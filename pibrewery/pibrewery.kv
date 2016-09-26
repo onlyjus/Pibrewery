@@ -11,14 +11,23 @@ ScreenManagement:
 
 <Graph@Widget>:
     max: 100
+    min: 0
     values: []
     canvas:
-        SmoothLine:
+        Color:
+            rgba: 0.8, 0.1,0.1, .5
+        Line:
+            width: 10
+            points: [0, 65, self.width, 65 ]
+        Color:
+            rgba: 0.1, 0.6,0.8, 1
+        Line:
+            width: 2
             points:
                 list(chain(*
                 [[
                 self.x + x * self.width / len(self.values),
-                self.y + y * self.height / self.max
+                self.y + (y-self.min) * self.height / (self.max - self.min)
                 ] for x, y in enumerate(self.values)])) if self.values else []
 
 <MainScreen>:
@@ -57,10 +66,11 @@ ScreenManagement:
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
+            size_hint: 1, 0.2
             Label:
                 text: 'Temperature'
             Label:
-                text: '64'
+                text: app.current_temperature
             Label:
                 text: 'F'
             ToggleButton:
@@ -78,5 +88,6 @@ ScreenManagement:
             y_grid: True
             y_ticks_major: 5
             x_ticks_major: 10
-            max: 100
-            values: app.running_values
+            max: app.temperature_max
+            min: app.temperature_min
+            values: app.temperature_values
