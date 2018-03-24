@@ -16,13 +16,13 @@ To install kivy on the raspberry pi, please follow the instructions here:
 
 https://kivy.org/docs/api-kivy.garden.html
 
-To install kivy-garden run
+To install kivy-garden run:
 
-$ pip install kivy-garden
+    $ pip install kivy-garden
 
-Once kivy-garden is installed, install graph with
+Once kivy-garden is installed, install graph with:
 
-$ garden install graph
+    $ garden install graph
 
 To install the Adafruit_GPIO library, please follow the instructions here:
 
@@ -31,13 +31,13 @@ https://github.com/adafruit/Adafruit_Python_GPIO
 ### Install
 To install this software, clone the repository in your usr directory:
 
-$ cd
-$ git clone https://github.com/onlyjus/Pibrewery
-$ cd Pibrewery
+    $ cd
+    $ git clone https://github.com/onlyjus/Pibrewery
+    $ cd Pibrewery
 
 Once the repository has been cloned, the application can be started with:
 
-$ python pibrewery
+    $ python pibrewery
 
 ## Hardware
 
