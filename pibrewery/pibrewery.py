@@ -61,5 +61,8 @@ class PiBrewery(App):
         self.temperature_max = max(self.temperature_values) + 1
         self.temperature_min = min(self.temperature_values) - 1
 
-if __name__ == '__main__':
+def main():
     PiBrewery().run()
+
+if __name__ == '__main__':
+    main()    
