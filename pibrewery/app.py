@@ -31,10 +31,13 @@ from pibrewery.constants import *
 class MainScreen(Screen):
     pass
 
-class BrewingScreen(Screen):
+class MashScreen(Screen):
     pass
 
-class FermentationScreen(Screen):
+class BrewScreen(Screen):
+    pass
+
+class FermentScreen(Screen):
     pass
 
 class ScreenManagement(ScreenManager):

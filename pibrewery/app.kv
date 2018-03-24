@@ -2,12 +2,16 @@
 #:import chain itertools.chain
 #:import Clock kivy.clock.Clock
 
+<label>:
+    font_size: dp(30)
+
 ScreenManagement:
     id: sm
     name: 'screen manager'
     MainScreen:
-    BrewingScreen
-    FermentationScreen:
+    MashScreen:
+    BrewScreen:
+    FermentScreen:
 
 <Graph@Widget>:
     max: 100
@@ -41,37 +45,50 @@ ScreenManagement:
             id: layout
             spacing: 20
             Button:
-                on_release: app.root.current = 'brewing'
-                text: 'Brewing'
+                on_release: app.root.current = 'mash'
+                text: 'Mash'
                 font_size: 50
             Button:
-                on_release: app.root.current = 'fermentation'
-                text: 'Fermentation'
+                on_release: app.root.current = 'brew'
+                text: 'Brew'
+                font_size: 50
+            Button:
+                on_release: app.root.current = 'ferment'
+                text: 'Ferment'
                 font_size: 50
         Button:
             on_release: app.get_running_app().stop()
             text: 'Close'
             font_size: 50
 
-<BrewingScreen>:
-    name: 'brewing'
+<MashScreen>:
+    name: 'mash'
     Button:
         on_release: app.root.current = 'main'
         text: 'back to the home screen'
         font_size: 50
 
-<FermentationScreen>:
+<BrewScreen>:
+    name: 'brew'
+    Button:
+        on_release: app.root.current = 'main'
+        text: 'back to the home screen'
+        font_size: 50
+
+<FermentScreen>:
     id: ferm_screen
-    name: 'fermentation'
+    name: 'ferment'
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
             size_hint: 1, 0.2
             Label:
+                size_hint: 1.2, 1
                 text: 'Temperature'
             Label:
                 text: app.current_temperature
             Label:
+                size_hint: 0.2, 1
                 text: 'F'
             ToggleButton:
                 text: 'Start'
@@ -83,10 +100,10 @@ ScreenManagement:
                 text: 'Home'
         Graph:
             id: ferm_graph
-            ylabel: 'Temperature'
+            #ylabel: 'Temperature'
             x_grid: True
             y_grid: True
-            y_ticks_major: 5
+            y_ticks_major: 15
             x_ticks_major: 10
             max: app.temperature_max
             min: app.temperature_min
