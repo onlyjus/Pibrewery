@@ -13,3 +13,4 @@ __project_url__ = 'https://github.com/onlyjus/brewpi'
 import os
 # Directory of the current file
 __dir__ = os.path.dirname(os.path.abspath(__file__))
+

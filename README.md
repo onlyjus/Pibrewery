@@ -37,7 +37,7 @@ To install this software, clone the repository in your usr directory:
 
 Once the repository has been cloned, the application can be started with:
 
-    $ python pibrewery
+    $ python -m pibrewery
 
 ## Hardware
 

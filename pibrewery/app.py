@@ -3,6 +3,8 @@
 # Copyright (c) 2016 Justin Weber
 # Licensed under the terms of the MIT License
 # see LICENSE
+#
+# The main app.
 
 import logging
 DATA_LOGGER = logging.getLogger('data')
@@ -22,9 +24,9 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.garden.graph import Graph, MeshLinePlot
 from kivy.properties import ListProperty, NumericProperty, StringProperty
 
-from read_sensors import ReadSensors
-from tools import c_to_f
-from constants import *
+from pibrewery.read_sensors import ReadSensors
+from pibrewery.tools import c_to_f, get_kv
+from pibrewery.constants import *
 
 class MainScreen(Screen):
     pass
@@ -47,7 +49,7 @@ class PiBrewery(App):
 
     def build(self):
         self.title = 'Pibrewery'
-        self.root = Builder.load_file("pibrewery.kv")
+        self.root = Builder.load_file(get_kv("app.kv"))
         return
 
     def update_fermentation_plot(self, dt):
