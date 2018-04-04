@@ -1,5 +1,6 @@
 import math
 import time
+import threading
 
 # Import the ADS1x15 module.
 import Adafruit_ADS1x15
@@ -81,11 +82,63 @@ class ReadSensors(object):
             return vref, voltage, res, temp_c
         return temp_c
 
+    def read_photo_interrupter(self):
+        voltage = self.read_voltage(2, 1)
 
-if __name__ == "__main__":
+        return voltage
+
+
+def count_bubbles(src):
+    sr = src.read_sensors
+    st = 0.1 # seconds
+    s = 0
+    s_list = [0]*int(60/st)
+    ns = len(s_list)
+    lv = -1
+    src.bubbles_per_min = 0
+    while not src.stop:
+        v = sr.read_photo_interrupter()
+
+        s_list[s] = v < 1 and lv - v > 3
+        src.bubbles_per_min = sum(s_list)
+        lv = v
+        s += 1
+        if s == ns:
+            s = 0
+        time.sleep(st)
+
+
+def test_thermister():
     sr = ReadSensors()
-
-    print('Vref', 'V', 'R', 'Temp, C')
+    print('Vref, V, R, Temp [C]')
     while True:
         print('{0:.2f}, {1:.2f}, {2:.2f}, {3:.2f}'.format(*sr.read_temperature(True)))
         time.sleep(1)
+
+
+def test_photo_interrupter():
+    sr = ReadSensors()
+    print('V')
+    while True:
+        print('{0:.2f}'.format(sr.read_photo_interrupter()))
+        time.sleep(.01)
+
+def test_count_bubbles():
+
+    read_senors = ReadSensors()
+    
+    class Test(threading.Thread):
+        def __init__(self, read_sensors):
+            threading.Thread.__init__(self)
+            self.read_sensors = read_sensors
+            self.stop = False
+            self.bubbles_per_min = 0
+        def run(self):
+            count_bubbles(self)
+
+    tc = Test(read_senors)
+    tc.start()
+
+if __name__ == "__main__":
+    # test_photo_interrupter()
+    test_count_bubbles()

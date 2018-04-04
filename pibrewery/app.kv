@@ -57,9 +57,10 @@ ScreenManagement:
                 text: 'Ferment'
                 font_size: 50
         Button:
-            on_release: app.get_running_app().stop()
+            on_release: app.close()
             text: 'Close'
             font_size: 50
+            size_hint: 1, 0.25
 
 <MashScreen>:
     name: 'mash'
@@ -88,14 +89,26 @@ ScreenManagement:
             Label:
                 text: app.current_temperature
             Label:
-                size_hint: 0.2, 1
+                size_hint: 0.4, 1
                 text: 'F'
             ToggleButton:
+                size_hint: 0.4, 1
                 text: 'Start'
                 on_state:
                     if self.state == 'down':Clock.schedule_interval(app.update_fermentation_plot, 1)
                     else:Clock.unschedule(app.update_fermentation_plot)
+        BoxLayout:
+            size_hint: 1, 0.2
+            Label:
+                size_hint: 1.2, 1
+                text: 'Bubbles'
+            Label:
+                text: app.current_bubbles_minute
+            Label:
+                size_hint: 0.4, 1
+                text: '/min'
             Button:
+                size_hint: 0.4, 1
                 on_release: app.root.current = 'main'
                 text: 'Home'
         Graph:
