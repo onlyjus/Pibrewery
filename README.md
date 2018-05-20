@@ -46,5 +46,10 @@ In order to read sensors, like a thermister, on the raspberry pi, an analog to
 digita converter (ADC) is needed. For this project, I used an ADS1115 from
 adafruit. It is a 16 bit I2C ADC PGA.
 
+### Pump Control
+To control a recirculation pump during mashing, a motor controller that can
+support the current and voltage of the pump is required. I used a 12v Solar
+Circulation Pump and a Adafruit Raspberry Pi Motor Hat.
+
 ## Contributors
 - Justin Weber
