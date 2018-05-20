@@ -64,10 +64,42 @@ ScreenManagement:
 
 <MashScreen>:
     name: 'mash'
-    Button:
-        on_release: app.root.current = 'main'
-        text: 'back to the home screen'
-        font_size: 50
+    BoxLayout:
+        padding: 10
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+            size_hint: 1, 0.2
+            Label:
+                size_hint: 1.2, 1
+                text: 'Temperature'
+            Label:
+                text: app.current_temperature
+            Label:
+                size_hint: 0.4, 1
+                text: 'F'
+            ToggleButton:
+                size_hint: 0.4, 1
+                text: 'Start'
+                on_state:
+                    if self.state == 'down':Clock.schedule_interval(app.update_mash, 1)
+                    else:Clock.unschedule(app.update_mash)
+            Button:
+                size_hint: 0.4, 1
+                on_release: app.root.current = 'main'
+                text: 'Home'
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+            ToggleButton:
+                on_state: app.pump_on(self.state)
+                text: 'Pump'
+            Slider
+                min: 100
+                max: 255
+                value: 150
+                on_touch_up: app.pump_speed(self.value)
 
 <BrewScreen>:
     name: 'brew'

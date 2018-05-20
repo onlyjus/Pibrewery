@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2016 Justin Weber
+# Copyright (c) 2018 Justin Weber
 # Licensed under the terms of the MIT License
 # see LICENSE
 #
@@ -21,6 +21,7 @@ from kivy.properties import ListProperty, NumericProperty, StringProperty
 from pibrewery.read_sensors import ReadSensors, count_bubbles
 from pibrewery.tools import c_to_f, get_kv
 from pibrewery.constants import *
+from pibrewery.pump import Pump
 
 # log data
 DATA_LOGGER = logging.getLogger('data')
@@ -79,6 +80,9 @@ class PiBrewery(App):
         bc = self.bubble_count = BubbleCountThread(sr)
         bc.start()
 
+        # setup pump
+        self.pump = Pump(PUMP_MOTOR, PUMP_DIRECTION)
+
     def build(self):
         self.title = 'Pibrewery'
         self.root = Builder.load_file(get_kv("app.kv"))
@@ -87,6 +91,9 @@ class PiBrewery(App):
     def close(self):
         # stop the bubble count thread
         self.bubble_count.stop = True
+
+        # stop the pump
+        self.pump.off()
 
         # stop the app
         self.get_running_app().stop()
@@ -114,6 +121,25 @@ class PiBrewery(App):
         self.temperature_values = self.temperature_values[-MAXIMUMPLOTLENGTH:]
         self.temperature_max = max(self.temperature_values) + 1
         self.temperature_min = min(self.temperature_values) - 1
+
+    def update_mash(self, dt):
+
+        # read the temperatures
+        temp = self.sensors.read_temperature()
+        temp = c_to_f(temp)
+        temp_str = '{0:.1f}'.format(temp)
+
+        # update labels
+        self.current_temperature = temp_str
+
+    def pump_on(self, state):
+        if state == "down":
+            self.pump.set_speed(self.pump.speed)
+        else:
+            self.pump.set_speed(0)
+
+    def pump_speed(self, speed):
+        self.pump.set_speed(speed)
 
 
 def main():
